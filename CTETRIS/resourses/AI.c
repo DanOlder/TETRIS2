@@ -145,208 +145,207 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 	switch (block) {
 	case 0:										// I
 		if (rotation == 0) {
-			s[0].y = s[1].y = s[2].y = s[3].y = H - 1;
-
-			int t = place;
-			s[0].x = t++;
-			s[1].x = t++;
-			s[2].x = t++;
-			s[3].x = t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 2;
+			s[2].y = H - 1;
+			s[3].x = place + 3;
+			s[3].y = H - 1;
 		}
-		else {
-			s[0].x = s[1].x = s[2].x = s[3].x = place;
-
-			int t = H;
-			s[0].y = --t;
-			s[1].y = --t;
-			s[2].y = --t;
-			s[3].y = --t;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place;
+			s[2].y = H - 3;
+			s[3].x = place;
+			s[3].y = H - 4;
 			if (place == W - 1) wellscoef = 2;
-			break;
 		}
+		break;
 	case 1:                                     // J
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = s[1].x = t;
-			s[2].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[0].y = --t;
-			s[3].y = s[2].y = s[1].y = --t;
-			break;
-		}
-		if (rotation == 1) {
-			s[0].x = s[2].x = s[3].x = place;
-			s[1].x = place + 1;
-
-			int t = H;
-			s[1].y = s[0].y = --t;
-			s[2].y = --t;
-			s[3].y = --t;
-			break;
-		}
-		if (rotation == 2) {
-			int t = place;
-			s[0].x = t;
-			s[1].x = ++t;
-			s[3].x = s[2].x = ++t;
-
-			t = H;
-			s[2].y = s[1].y = s[0].y = --t;
-			s[3].y = --t;
-			break;
-		}
-		if (rotation == 3) {
-			s[1].x = s[2].x = s[3].x = place + 1;
 			s[0].x = place;
-
-			int t = H;
-			s[3].y = --t;
-			s[2].y = --t;
-			s[0].y = s[1].y = --t;
-			break;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
 		}
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place;
+			s[2].y = H - 2;
+			s[3].x = place;
+			s[3].y = H - 3;
+		}
+		else if (rotation == 2) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 2;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
+		}
+		else if (rotation == 3) {
+			s[0].x = place;
+			s[0].y = H - 3;
+			s[1].x = place + 1;
+			s[1].y = H - 3;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 1;
+		}
+		break;
 	case 2:                                     // L
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[1].x = ++t;
-			s[3].x = s[2].x = ++t;
-
-			t = H;
-			s[3].y = --t;
-			s[0].y = s[1].y = s[2].y = --t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 2;
+			s[2].x = place + 2;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
 		}
-		if (rotation == 1) {
-			s[0].x = s[1].x = s[2].x = place;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place;
+			s[2].y = H - 3;
 			s[3].x = place + 1;
-
-			int t = H;
-			s[0].y = --t;
-			s[1].y = --t;
-			s[3].y = s[2].y = --t;
-			break;
+			s[3].y = H - 3;
 		}
-		if (rotation == 2) {
-			int t = place;
-			s[1].x = s[0].x = t;
-			s[2].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[2].y = s[3].y = s[1].y = --t;
-			s[0].y = --t;
-			break;
+		else if (rotation == 2) {
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
 		}
-		if (rotation == 3) {
-			int t = place;
-			s[0].x = t;
-			s[3].x = s[2].x = s[1].x = ++t;
-
-			t = H;
-			s[0].y = s[1].y = --t;
-			s[2].y = --t;
-			s[3].y = --t;
-			break;
+		else if (rotation == 3) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 3;
 		}
+		break;
 	case 3:                                     // O
-		s[1].x = s[0].x = place;
-		s[3].x = s[2].x = place + 1;
-
-		int t = H;
-		s[3].y = s[0].y = --t;
-		s[2].y = s[1].y = --t;
+		s[0].x = place;
+		s[0].y = H - 1;
+		s[1].x = place;
+		s[1].y = H - 2;
+		s[2].x = place + 1;
+		s[2].y = H - 2;
+		s[3].x = place + 1;
+		s[3].y = H - 1;
 		break;
 	case 4:                                     // S
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[3].y = s[2].y = --t;
-			s[1].y = s[0].y = --t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
 		}
-		else {
-			s[1].x = s[0].x = place;
-			s[3].x = s[2].x = place + 1;
-
-			int t = H;
-			s[0].y = --t;
-			s[2].y = s[1].y = --t;
-			s[3].y = --t;
-			break;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 3;
 		}
+		break;
 	case 5:                                     // T
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[2].y = --t;
-			s[3].y = s[1].y = s[0].y = --t;
-			break;
-		}
-		if (rotation == 1) {
-			s[3].x = s[1].x = s[0].x = place;
-			s[2].x = place + 1;
-
-			int t = H;
-			s[0].y = --t;
-			s[2].y = s[1].y = --t;
-			s[3].y = --t;
-			break;
-		}
-		if (rotation == 2) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[3].y = s[0].y = s[1].y = --t;
-			s[2].y = --t;
-			break;
-		}
-		if (rotation == 3) {
 			s[0].x = place;
-			s[3].x = s[1].x = s[2].x = place + 1;
-
-			int t = H;
-			s[1].y = --t;
-			s[2].y = s[0].y = --t;
-			s[3].y = --t;
-			break;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
 		}
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place;
+			s[3].y = H - 3;
+		}
+		else if (rotation == 2) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
+		}
+		else if (rotation == 3) {
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 3;
+		}
+		break;
 	case 6:                                     // Z
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[1].y = s[0].y = --t;
-			s[3].y = s[2].y = --t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
 		}
-		else {
-			s[1].x = s[0].x = place;
-			s[3].x = s[2].x = place + 1;
-
-			int t = H;
-			s[3].y = --t;
-			s[2].y = s[1].y = --t;
-			s[0].y = --t;
-			break;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 3;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 1;
 		}
+		break;
 	}
 	if (place == W - 1) wellscoef--;
 
