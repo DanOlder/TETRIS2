@@ -51,7 +51,7 @@ int CHK_edges(int* newmap, Position* s, int H) {
 	return 1;
 }
 
-int CheckFullLine(int* newmap, int W, int H) {                   // ïðîâåðêà íà çàïîëíåííóþ ëèíèþ
+int CheckFullLine(int* newmap, int W, int H) {
 	int f;
 	int line = 0;
 	for (int j = 0; j < H; j++) {
@@ -66,7 +66,7 @@ int CheckFullLine(int* newmap, int W, int H) {                   // ïðîâåð
 	return line;
 }
 
-int CheckHoles(int* newmap, int W, int H) {  // ïîèñê êëåòîê-êîëîäöåâ
+int CheckHoles(int* newmap, int W, int H) {
 	int hole = 0;
 
 	for (int i = 0; i < W; i++) {
@@ -101,7 +101,7 @@ int Check_wells(int* newmap, int W, int H) {
 	return well;
 }
 
-int transition_column(int* newmap, int W, int H) {   // ïåðåõîäû â ñòîëáöàõ
+int transition_column(int* newmap, int W, int H) {
 	int trans = 0;
 	for (int i = 0; i < W; i++) {
 		for (int j = 0; j < H; j++) {
@@ -111,11 +111,11 @@ int transition_column(int* newmap, int W, int H) {   // ïåðåõîäû â ñò
 			else if (*(newmap + i * H + j + 1) == 0) trans++;
 		}
 	}
-	trans--;    // óáèðàåì ñàìûé âåðõíèé ñðàâíèâàåìûé áëîê
+	trans--;
 	return trans;
 }
 
-int transition_line(int* newmap, int W, int H) {   // ïåðåõîäû â ñòðîêàõ
+int transition_line(int* newmap, int W, int H) {
 	int trans = 0;
 	for (int j = 0; j < H; j++) {
 		for (int i = 0; i < W; i++) {
@@ -153,8 +153,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 1;
 			s[3].x = place + 3;
 			s[3].y = H - 1;
+			break;
 		}
-		else if (rotation == 1) {
+		else {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place;
@@ -164,8 +165,8 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[3].x = place;
 			s[3].y = H - 4;
 			if (place == W - 1) wellscoef = 2;
+			break;
 		}
-		break;
 	case 1:                                     // J
 		if (rotation == 0) {
 			s[0].x = place;
@@ -176,8 +177,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 2;
 			s[3].y = H - 2;
+			break;
 		}
-		else if (rotation == 1) {
+		if (rotation == 1) {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place + 1;
@@ -186,8 +188,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place;
 			s[3].y = H - 3;
+			break;
 		}
-		else if (rotation == 2) {
+		if (rotation == 2) {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place + 1;
@@ -196,8 +199,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 1;
 			s[3].x = place + 2;
 			s[3].y = H - 2;
+			break;
 		}
-		else if (rotation == 3) {
+		else {
 			s[0].x = place;
 			s[0].y = H - 3;
 			s[1].x = place + 1;
@@ -206,8 +210,8 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 1;
 			s[3].y = H - 1;
+			break;
 		}
-		break;
 	case 2:                                     // L
 		if (rotation == 0) {
 			s[0].x = place;
@@ -218,8 +222,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 2;
 			s[3].y = H - 1;
+			break;
 		}
-		else if (rotation == 1) {
+		if (rotation == 1) {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place;
@@ -228,8 +233,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 3;
 			s[3].x = place + 1;
 			s[3].y = H - 3;
+			break;
 		}
-		else if (rotation == 2) {
+		if (rotation == 2) {
 			s[0].x = place;
 			s[0].y = H - 2;
 			s[1].x = place;
@@ -238,8 +244,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 1;
 			s[3].x = place + 2;
 			s[3].y = H - 1;
+			break;
 		}
-		else if (rotation == 3) {
+		else {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place + 1;
@@ -248,8 +255,8 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 1;
 			s[3].y = H - 3;
+			break;
 		}
-		break;
 	case 3:                                     // O
 		s[0].x = place;
 		s[0].y = H - 1;
@@ -270,8 +277,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 1;
 			s[3].x = place + 2;
 			s[3].y = H - 1;
+			break;
 		}
-		else if (rotation == 1) {
+		else {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place;
@@ -280,8 +288,8 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 1;
 			s[3].y = H - 3;
+			break;
 		}
-		break;
 	case 5:                                     // T
 		if (rotation == 0) {
 			s[0].x = place;
@@ -292,8 +300,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 1;
 			s[3].x = place + 2;
 			s[3].y = H - 2;
+			break;
 		}
-		else if (rotation == 1) {
+		if (rotation == 1) {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place;
@@ -302,8 +311,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place;
 			s[3].y = H - 3;
+			break;
 		}
-		else if (rotation == 2) {
+		if (rotation == 2) {
 			s[0].x = place;
 			s[0].y = H - 1;
 			s[1].x = place + 1;
@@ -312,8 +322,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 2;
 			s[3].y = H - 1;
+			break;
 		}
-		else if (rotation == 3) {
+		else {
 			s[0].x = place;
 			s[0].y = H - 2;
 			s[1].x = place + 1;
@@ -322,8 +333,8 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 1;
 			s[3].y = H - 3;
+			break;
 		}
-		break;
 	case 6:                                     // Z
 		if (rotation == 0) {
 			s[0].x = place;
@@ -334,8 +345,9 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 2;
 			s[3].y = H - 2;
+			break;
 		}
-		else if (rotation == 1) {
+		else {
 			s[0].x = place;
 			s[0].y = H - 3;
 			s[1].x = place;
@@ -344,9 +356,10 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 			s[2].y = H - 2;
 			s[3].x = place + 1;
 			s[3].y = H - 1;
+			break;
 		}
-		break;
 	}
+
 	if (place == W - 1) wellscoef--;
 
 	if ((*(newmap + s[0].x * H + s[0].y) == 1) || (*(newmap + s[1].x * H + s[1].y) == 1) || (*(newmap + s[2].x * H + s[2].y) == 1) || (*(newmap + s[3].x * H + s[3].y) == 1)) {
