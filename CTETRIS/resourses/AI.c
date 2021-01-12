@@ -2,39 +2,6 @@
 
 int* newmap = 0x00;
 
-////////////////////////////////////////////////////////////////////////////////////
-
-int attn[7];
-int pred1[7];
-int pred2[7];
-int pred3[7];
-int pred4[7];
-
-void predv(int W) {
-	pred1[0] = W;
-	attn[0] = pred2[0] = pred1[0] + W - 3;
-
-	pred1[2] = pred1[1] = W - 2;
-	pred2[2] = pred2[1] = pred1[1] + W - 1;
-	pred3[2] = pred3[1] = pred2[1] + W - 2;
-	attn[2] = pred4[2] = attn[1] = pred4[1] = pred3[1] + W - 1;
-
-	attn[3] = pred1[3] = W - 1;
-
-	pred1[4] = W - 2;
-	attn[4] = pred2[4] = pred1[4] + W - 1;
-
-	pred1[5] = W - 2;
-	pred2[5] = pred1[5] + W - 1;
-	pred3[5] = pred2[5] + W - 2;
-	attn[5] = pred4[5] = pred3[5] + W - 1;
-
-	pred1[6] = W - 2;
-	attn[6] = pred2[6] = pred1[6] + W - 1;
-}
-
-////////////////////////////////////////////////////////////////////////////////////
-
 void copy_map(int* map, int* newmap, int W, int H) {
 	for (int i = 0; i < W; i++)
 		for (int j = 0; j < H; j++)
@@ -387,32 +354,101 @@ int find_min(float* attempts, int max) {
 }
 
 void alloc(int* map, int W, int H, int block, int strategy) {
-	static int a = 0;
-	if (!a) {
-		predv(W);
-		a++;
+	int sq[4];    //êîëè÷åñòâî êâàäðàòîâ â øèðèíó ïðè îïðåäåëåííîì ïîâîðîòå
+	sq[0] = sq[1] = sq[2] = sq[3] = W;
+
+	int pred1, pred2, pred3, pred4;
+	int att_number;
+
+	switch (block) {
+	case 0:                                     // I
+		sq[0] = 0;
+		sq[1] = 3;
+
+		pred1 = W;
+		att_number = pred2 = pred1 + W - 3;
+
+		break;
+	case 1:                                     // J
+		sq[0] = 2;
+		sq[1] = 1;
+		sq[2] = 2;
+		sq[3] = 1;
+
+		pred1 = W - 2;
+		pred2 = pred1 + W - 1;
+		pred3 = pred2 + W - 2;
+		att_number = pred4 = pred3 + W - 1;
+
+		break;
+	case 2:                                     // L
+		sq[0] = 2;
+		sq[1] = 1;
+		sq[2] = 2;
+		sq[3] = 1;
+
+		pred1 = W - 2;
+		pred2 = pred1 + W - 1;
+		pred3 = pred2 + W - 2;
+		att_number = pred4 = pred3 + W - 1;
+
+		break;
+	case 3:                                     // O
+		sq[0] = 1;
+
+		att_number = pred1 = W - 1;
+
+		break;
+	case 4:                                     // S
+		sq[0] = 2;
+		sq[1] = 1;
+
+		pred1 = W - 2;
+		att_number = pred2 = pred1 + W - 1;
+
+		break;
+	case 5:                                     // T
+		sq[0] = 2;
+		sq[1] = 1;
+		sq[2] = 2;
+		sq[3] = 1;
+
+		pred1 = W - 2;
+		pred2 = pred1 + W - 1;
+		pred3 = pred2 + W - 2;
+		att_number = pred4 = pred3 + W - 1;
+
+		break;
+	case 6:                                     // Z
+		sq[0] = 2;
+		sq[1] = 1;
+
+		pred1 = W - 2;
+		att_number = pred2 = pred1 + W - 1;
+
+		break;
 	}
 
-	float* attempts = (float*)malloc(attn[block] * sizeof(float));
+	float* attempts = (float*)malloc(att_number * sizeof(float));
 	memset(newmap, 0, 4);
 	int rotation = 0; int place = 0;
 
-	for (int i = 0; i < attn[block]; i++) {
-		if (i < pred1[block]) { rotation = 0; place = i; }
-		else if (i < pred2[block]) { rotation = 1; place = i - pred1[block]; }
-		else if (i < pred3[block]) { rotation = 2; place = i - pred2[block]; }
-		else if (i < pred4[block]) { rotation = 3; place = i - pred3[block]; }
+	for (int i = 0; i < att_number; i++) {
+		if (i < pred1) { rotation = 0; place = i; }
+		else if (i < pred2) { rotation = 1; place = i - pred1; }
+		else if (i < pred3) { rotation = 2; place = i - pred2; }
+		else if (i < pred4) { rotation = 3; place = i - pred3; }
 
 		copy_map(map, newmap, W, H);
 		Try(block, place, attempts, newmap, W, H, rotation, i, strategy);
 		memset(newmap, 0, 4);
 	}
 
-	int maximum = find_min(attempts, attn[block]);
-	if (maximum < pred1[block]) { rotation = 0; place = maximum; }
-	else if (maximum < pred2[block]) { rotation = 1; place = maximum - pred1[block]; }
-	else if (maximum < pred3[block]) { rotation = 2; place = maximum - pred2[block]; }
-	else if (maximum < pred4[block]) { rotation = 3; place = maximum - pred3[block]; }
+	int maximum = find_min(attempts, att_number);
+	if (maximum < pred1) { rotation = 0; place = maximum; }
+	else if (maximum < pred2) { rotation = 1; place = maximum - pred1; }
+	else if (maximum < pred3) { rotation = 2; place = maximum - pred2; }
+	else if (maximum < pred4) { rotation = 3; place = maximum - pred3; }
 	Try(block, place, attempts, map, W, H, rotation, -1, strategy);
 }
 
