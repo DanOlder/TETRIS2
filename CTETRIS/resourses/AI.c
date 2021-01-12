@@ -10,16 +10,13 @@ void copy_map(int* map, int* newmap, int W, int H) {
 
 int CHK_edges(int* newmap, Position* s, int H) {
 	for (int i = 0; i < 4; i++) {
-		if (s[0].y <= 0 || *(newmap + s[0].x * H + s[0].y - 1) == 1) return 0;
-		if (s[1].y <= 0 || *(newmap + s[1].x * H + s[1].y - 1) == 1) return 0;
-		if (s[2].y <= 0 || *(newmap + s[2].x * H + s[2].y - 1) == 1) return 0;
-		if (s[3].y <= 0 || *(newmap + s[3].x * H + s[3].y - 1) == 1) return 0;
+		if (s[i].y <= 0 || *(newmap + s[i].x * H + s[i].y - 1) == 1) return 0;
 	}
 	return 1;
 }
 
 int CheckFullLine(int* newmap, int W, int H) {                   // ïðîâåðêà íà çàïîëíåííóþ ëèíèþ
-	int f;
+	int f = 0;
 	int line = 0;
 	for (int j = 0; j < H; j++) {
 		f = 0;
@@ -97,12 +94,9 @@ int transition_line(int* newmap, int W, int H) {   // ïåðåõîäû â ñòð
 
 int Findmax_Pos(Position* s) {
 	int h = s[0].y;
-
-	if (s[0].y > h) h = s[0].y;
-	if (s[1].y > h) h = s[1].y;
-	if (s[2].y > h) h = s[2].y;
-	if (s[3].y > h) h = s[3].y;
-
+	for (int i = 1; i < 4; i++) {
+		if (s[i].y > h) h = s[i].y;
+	}
 	return h;
 }
 
@@ -112,228 +106,219 @@ void Try(int block, int place, float* attempts, int* newmap, int W, int H, int r
 	switch (block) {
 	case 0:										// I
 		if (rotation == 0) {
-			s[0].y = s[1].y = s[2].y = s[3].y = H - 1;
-
-			int t = place;
-			s[0].x = t++;
-			s[1].x = t++;
-			s[2].x = t++;
-			s[3].x = t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 2;
+			s[2].y = H - 1;
+			s[3].x = place + 3;
+			s[3].y = H - 1;
 		}
-		else {
-			s[0].x = s[1].x = s[2].x = s[3].x = place;
-
-			int t = H;
-			s[0].y = --t;
-			s[1].y = --t;
-			s[2].y = --t;
-			s[3].y = --t;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place;
+			s[2].y = H - 3;
+			s[3].x = place;
+			s[3].y = H - 4;
 			if (place == W - 1) wellscoef = 2;
-			break;
 		}
+		break;
 	case 1:                                     // J
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = s[1].x = t;
-			s[2].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[0].y = --t;
-			s[3].y = s[2].y = s[1].y = --t;
-			break;
-		}
-		if (rotation == 1) {
-			s[0].x = s[2].x = s[3].x = place;
-			s[1].x = place + 1;
-
-			int t = H;
-			s[1].y = s[0].y = --t;
-			s[2].y = --t;
-			s[3].y = --t;
-			break;
-		}
-		if (rotation == 2) {
-			int t = place;
-			s[0].x = t;
-			s[1].x = ++t;
-			s[3].x = s[2].x = ++t;
-
-			t = H;
-			s[2].y = s[1].y = s[0].y = --t;
-			s[3].y = --t;
-			break;
-		}
-		if (rotation == 3) {
-			s[1].x = s[2].x = s[3].x = place + 1;
 			s[0].x = place;
-
-			int t = H;
-			s[3].y = --t;
-			s[2].y = --t;
-			s[0].y = s[1].y = --t;
-			break;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
 		}
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place;
+			s[2].y = H - 2;
+			s[3].x = place;
+			s[3].y = H - 3;
+		}
+		else if (rotation == 2) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 2;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
+		}
+		else if (rotation == 3) {
+			s[0].x = place;
+			s[0].y = H - 3;
+			s[1].x = place + 1;
+			s[1].y = H - 3;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 1;
+		}
+		break;
 	case 2:                                     // L
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[1].x = ++t;
-			s[3].x = s[2].x = ++t;
-
-			t = H;
-			s[3].y = --t;
-			s[0].y = s[1].y = s[2].y = --t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 2;
+			s[2].x = place + 2;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
 		}
-		if (rotation == 1) {
-			s[0].x = s[1].x = s[2].x = place;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place;
+			s[2].y = H - 3;
 			s[3].x = place + 1;
-
-			int t = H;
-			s[0].y = --t;
-			s[1].y = --t;
-			s[3].y = s[2].y = --t;
-			break;
+			s[3].y = H - 3;
 		}
-		if (rotation == 2) {
-			int t = place;
-			s[1].x = s[0].x = t;
-			s[2].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[2].y = s[3].y = s[1].y = --t;
-			s[0].y = --t;
-			break;
+		else if (rotation == 2) {
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
 		}
-		if (rotation == 3) {
-			int t = place;
-			s[0].x = t;
-			s[3].x = s[2].x = s[1].x = ++t;
-
-			t = H;
-			s[0].y = s[1].y = --t;
-			s[2].y = --t;
-			s[3].y = --t;
-			break;
+		else if (rotation == 3) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 3;
 		}
+		break;
 	case 3:                                     // O
-		s[1].x = s[0].x = place;
-		s[3].x = s[2].x = place + 1;
-
-		int t = H;
-		s[3].y = s[0].y = --t;
-		s[2].y = s[1].y = --t;
+		s[0].x = place;
+		s[0].y = H - 1;
+		s[1].x = place;
+		s[1].y = H - 2;
+		s[2].x = place + 1;
+		s[2].y = H - 2;
+		s[3].x = place + 1;
+		s[3].y = H - 1;
 		break;
 	case 4:                                     // S
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[3].y = s[2].y = --t;
-			s[1].y = s[0].y = --t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
 		}
-		else {
-			s[1].x = s[0].x = place;
-			s[3].x = s[2].x = place + 1;
-
-			int t = H;
-			s[0].y = --t;
-			s[2].y = s[1].y = --t;
-			s[3].y = --t;
-			break;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 3;
 		}
+		break;
 	case 5:                                     // T
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[2].y = --t;
-			s[3].y = s[1].y = s[0].y = --t;
-			break;
-		}
-		if (rotation == 1) {
-			s[3].x = s[1].x = s[0].x = place;
-			s[2].x = place + 1;
-
-			int t = H;
-			s[0].y = --t;
-			s[2].y = s[1].y = --t;
-			s[3].y = --t;
-			break;
-		}
-		if (rotation == 2) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[3].y = s[0].y = s[1].y = --t;
-			s[2].y = --t;
-			break;
-		}
-		if (rotation == 3) {
 			s[0].x = place;
-			s[3].x = s[1].x = s[2].x = place + 1;
-
-			int t = H;
-			s[1].y = --t;
-			s[2].y = s[0].y = --t;
-			s[3].y = --t;
-			break;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 1;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
 		}
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place;
+			s[3].y = H - 3;
+		}
+		else if (rotation == 2) {
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 1;
+		}
+		else if (rotation == 3) {
+			s[0].x = place;
+			s[0].y = H - 2;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 3;
+		}
+		break;
 	case 6:                                     // Z
 		if (rotation == 0) {
-			int t = place;
-			s[0].x = t;
-			s[2].x = s[1].x = ++t;
-			s[3].x = ++t;
-
-			t = H;
-			s[1].y = s[0].y = --t;
-			s[3].y = s[2].y = --t;
-			break;
+			s[0].x = place;
+			s[0].y = H - 1;
+			s[1].x = place + 1;
+			s[1].y = H - 1;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 2;
+			s[3].y = H - 2;
 		}
-		else {
-			s[1].x = s[0].x = place;
-			s[3].x = s[2].x = place + 1;
-
-			int t = H;
-			s[3].y = --t;
-			s[2].y = s[1].y = --t;
-			s[0].y = --t;
-			break;
+		else if (rotation == 1) {
+			s[0].x = place;
+			s[0].y = H - 3;
+			s[1].x = place;
+			s[1].y = H - 2;
+			s[2].x = place + 1;
+			s[2].y = H - 2;
+			s[3].x = place + 1;
+			s[3].y = H - 1;
 		}
+		break;
 	}
 	if (place == W - 1) wellscoef--;
-
-	if ((*(newmap + s[0].x * H + s[0].y) == 1) || (*(newmap + s[1].x * H + s[1].y) == 1) || (*(newmap + s[2].x * H + s[2].y) == 1) || (*(newmap + s[3].x * H + s[3].y) == 1)) {
-		attempts[number] = 99999999.0;
-		return;
+	for (int i = 0; i < 4; i++) {
+		if (*(newmap + s[i].x * H + s[i].y) == 1) { attempts[number] = 99999999.0; return; }
 	}
-
 	while (CHK_edges(newmap, s, H) != 0) {
-		s[0].y--;
-		s[1].y--;
-		s[2].y--;
-		s[3].y--;
+		for (int i = 0; i < 4; i++)
+			s[i].y--;
 	}
-
-	*(newmap + s[0].x * H + s[0].y) = 1;
-	*(newmap + s[1].x * H + s[1].y) = 1;
-	*(newmap + s[2].x * H + s[2].y) = 1;
-	*(newmap + s[3].x * H + s[3].y) = 1;
-
+	for (int i = 0; i < 4; i++) {
+		*(newmap + s[i].x * H + s[i].y) = 1;
+	}
 	if (number == -1) return;
 	else {
 		if (strategy == 0) wellscoef = 0;
@@ -355,103 +340,67 @@ int find_min(float* attempts, int max) {
 
 void alloc(int* map, int W, int H, int block, int strategy) {
 	int sq[4];    //êîëè÷åñòâî êâàäðàòîâ â øèðèíó ïðè îïðåäåëåííîì ïîâîðîòå
-	sq[0] = sq[1] = sq[2] = sq[3] = W;
-
-	int pred1, pred2, pred3, pred4;
-	int att_number;
-
+	sq[0] = W + 1; sq[1] = W + 1; sq[2] = W + 1; sq[3] = W + 1;
 	switch (block) {
 	case 0:                                     // I
-		sq[0] = 0;
-		sq[1] = 3;
-
-		pred1 = W;
-		att_number = pred2 = pred1 + W - 3;
-
+		sq[0] = 1;
+		sq[1] = 4;
 		break;
 	case 1:                                     // J
-		sq[0] = 2;
-		sq[1] = 1;
-		sq[2] = 2;
-		sq[3] = 1;
-
-		pred1 = W - 2;
-		pred2 = pred1 + W - 1;
-		pred3 = pred2 + W - 2;
-		att_number = pred4 = pred3 + W - 1;
-
+		sq[0] = 3;
+		sq[1] = 2;
+		sq[2] = 3;
+		sq[3] = 2;
 		break;
 	case 2:                                     // L
-		sq[0] = 2;
-		sq[1] = 1;
-		sq[2] = 2;
-		sq[3] = 1;
-
-		pred1 = W - 2;
-		pred2 = pred1 + W - 1;
-		pred3 = pred2 + W - 2;
-		att_number = pred4 = pred3 + W - 1;
-
+		sq[0] = 3;
+		sq[1] = 2;
+		sq[2] = 3;
+		sq[3] = 2;
 		break;
 	case 3:                                     // O
-		sq[0] = 1;
-
-		att_number = pred1 = W - 1;
-
+		sq[0] = 2;
 		break;
 	case 4:                                     // S
-		sq[0] = 2;
-		sq[1] = 1;
-
-		pred1 = W - 2;
-		att_number = pred2 = pred1 + W - 1;
-
+		sq[0] = 3;
+		sq[1] = 2;
 		break;
 	case 5:                                     // T
-		sq[0] = 2;
-		sq[1] = 1;
-		sq[2] = 2;
-		sq[3] = 1;
-
-		pred1 = W - 2;
-		pred2 = pred1 + W - 1;
-		pred3 = pred2 + W - 2;
-		att_number = pred4 = pred3 + W - 1;
-
+		sq[0] = 3;
+		sq[1] = 2;
+		sq[2] = 3;
+		sq[3] = 2;
 		break;
 	case 6:                                     // Z
-		sq[0] = 2;
-		sq[1] = 1;
-
-		pred1 = W - 2;
-		att_number = pred2 = pred1 + W - 1;
-
+		sq[0] = 3;
+		sq[1] = 2;
 		break;
 	}
 
+	int att_number = 4 * W - (sq[0] + sq[1] + sq[2] + sq[3] - 4);
 	float* attempts = (float*)malloc(att_number * sizeof(float));
-	memset(newmap, 0, 4);
+	memset(newmap, 0, sizeof(int));
 	int rotation = 0; int place = 0;
 
 	for (int i = 0; i < att_number; i++) {
-		if (i < pred1) { rotation = 0; place = i; }
-		else if (i < pred2) { rotation = 1; place = i - pred1; }
-		else if (i < pred3) { rotation = 2; place = i - pred2; }
-		else if (i < pred4) { rotation = 3; place = i - pred3; }
+		if (i < W - (sq[0] - 1)) { rotation = 0; place = i; }
+		else if (i < (W - (sq[0] - 1) + W - (sq[1] - 1))) { rotation = 1; place = i - (W - (sq[0] - 1)); }
+		else if (i < (W - (sq[0] - 1) + W - (sq[1] - 1) + W - (sq[2] - 1))) { rotation = 2; place = i - (W - (sq[0] - 1) + W - (sq[1] - 1)); }
+		else if (i < (W - (sq[0] - 1) + W - (sq[1] - 1) + W - (sq[2] - 1) + W - (sq[3] - 1))) { rotation = 3; place = i - (W - (sq[0] - 1) + W - (sq[1] - 1) + W - (sq[2] - 1)); }
 
 		copy_map(map, newmap, W, H);
 		Try(block, place, attempts, newmap, W, H, rotation, i, strategy);
-		memset(newmap, 0, 4);
+		memset(newmap, 0, sizeof(int));
 	}
 
 	int maximum = find_min(attempts, att_number);
-	if (maximum < pred1) { rotation = 0; place = maximum; }
-	else if (maximum < pred2) { rotation = 1; place = maximum - pred1; }
-	else if (maximum < pred3) { rotation = 2; place = maximum - pred2; }
-	else if (maximum < pred4) { rotation = 3; place = maximum - pred3; }
+	if (maximum < W - (sq[0] - 1)) { rotation = 0; place = maximum; }
+	else if (maximum < (W - (sq[0] - 1) + W - (sq[1] - 1))) { rotation = 1; place = maximum - (W - (sq[0] - 1)); }
+	else if (maximum < (W - (sq[0] - 1) + W - (sq[1] - 1) + W - (sq[2] - 1))) { rotation = 2; place = maximum - (W - (sq[0] - 1) + W - (sq[1] - 1)); }
+	else if (maximum < (W - (sq[0] - 1) + W - (sq[1] - 1) + W - (sq[2] - 1) + W - (sq[3] - 1))) { rotation = 3; place = maximum - (W - (sq[0] - 1) + W - (sq[1] - 1) + W - (sq[2] - 1)); }
 	Try(block, place, attempts, map, W, H, rotation, -1, strategy);
 }
 
 void INI() {
-	newmap = (int*)malloc(40000);
+	newmap = (int*)malloc(100 * 100 * sizeof(int));
 }
