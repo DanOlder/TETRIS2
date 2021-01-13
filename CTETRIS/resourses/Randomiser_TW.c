@@ -4,11 +4,20 @@ int bag[14];
 int max = 14;
 
 void fillBag() {
-	int j = 0;
-	for (int i = 0; i < 14; i++) {
-		bag[i] = j;
-		j++;
-		if (j == 7) j = 0;
+	__asm {
+		lea eax, bag
+		xor ecx, ecx
+		xor edx, edx
+		lp :
+		mov[eax + edx * 4], ecx
+			inc ecx
+			inc edx
+			cmp ecx, 7
+			jne end
+			xor ecx, ecx
+			end :
+		cmp edx, 14
+			jl lp
 	}
 }
 
