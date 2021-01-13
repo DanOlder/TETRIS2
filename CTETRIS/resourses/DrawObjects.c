@@ -75,23 +75,17 @@ void DrawStaticObj(int W, int H, int scale, int* map, int activeTheme) {
 					glVertex2f(i * scale, j * scale);
 					glVertex2f(i * scale + scale / 2, j * scale + scale / 2);
 					glVertex2f(i * scale, (j + 1) * scale);
-					glEnd();
 
-					glBegin(GL_TRIANGLES);
 					glColor3ub(r * 0.77, g * 0.77, b * 0.77);
 					glVertex2f(i * scale, (j + 1) * scale);
 					glVertex2f(i * scale + scale / 2, j * scale + scale / 2);
 					glVertex2f((i + 1) * scale, (j + 1) * scale);
-					glEnd();
 
-					glBegin(GL_TRIANGLES);
 					glColor3ub(r * 0.82, g * 0.82, b * 0.82);
 					glVertex2f(i * scale, j * scale);
 					glVertex2f(i * scale + scale / 2, j * scale + scale / 2);
 					glVertex2f((i + 1) * scale, j * scale);
-					glEnd();
 
-					glBegin(GL_TRIANGLES);
 					glColor3ub(r + 60, b + 60, b + 60);
 					glVertex2f((i + 1) * scale, j * scale);
 					glVertex2f(i * scale + scale / 2, j * scale + scale / 2);
@@ -154,23 +148,17 @@ void DrawDynamicObj(Position* s, int scale, Color newC, int activeTheme) {
 			glVertex2f(s[i].x * scale, s[i].y * scale);
 			glVertex2f(s[i].x * scale + scale / 2, s[i].y * scale + scale / 2);
 			glVertex2f(s[i].x * scale, (s[i].y + 1) * scale);
-			glEnd();
 
-			glBegin(GL_TRIANGLES);
 			glColor3ub(newC.R * 0.77, newC.G * 0.77, newC.B * 0.77);
 			glVertex2f(s[i].x * scale, (s[i].y + 1) * scale);
 			glVertex2f(s[i].x * scale + scale / 2, s[i].y * scale + scale / 2);
 			glVertex2f((s[i].x + 1) * scale, (s[i].y + 1) * scale);
-			glEnd();
 
-			glBegin(GL_TRIANGLES);
 			glColor3ub(newC.R * 0.82, newC.G * 0.82, newC.B * 0.82);
 			glVertex2f(s[i].x * scale, s[i].y * scale);
 			glVertex2f(s[i].x * scale + scale / 2, s[i].y * scale + scale / 2);
 			glVertex2f((s[i].x + 1) * scale, s[i].y * scale);
-			glEnd();
 
-			glBegin(GL_TRIANGLES);
 			glColor3ub(newC.R + 60, newC.G + 60, newC.B + 60);
 			glVertex2f((s[i].x + 1) * scale, s[i].y * scale);
 			glVertex2f(s[i].x * scale + scale / 2, s[i].y * scale + scale / 2);
@@ -324,10 +312,8 @@ void DrawActiveElement(int posx, int posy, Color newC, int isActive) {
 		glBegin(GL_LINES);
 		glVertex2f(posx, posy); glVertex2f(posx + 10, posy + 10);
 		glVertex2f(posx + 10, posy); glVertex2f(posx, posy + 10);
-		glEnd();
 
 		glColor3ub(newC.R, newC.G, newC.B);
-		glBegin(GL_LINES);
 		glVertex2f(posx, posy); glVertex2f(posx + 10, posy);
 		glVertex2f(posx + 10, posy); glVertex2f(posx + 10, posy + 10);
 		glVertex2f(posx + 10, posy + 10);  glVertex2f(posx, posy + 10);
